@@ -7,14 +7,8 @@ FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
 # Install Ansible and the community.general plugin collection
 RUN pip3 install ansible
 RUN ansible-galaxy collection install community.general
-# [Optional] If your pip requirements rarely change, uncomment this section to add them to the image.
-# COPY requirements.txt /tmp/pip-tmp/
-# RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
-#    && rm -rf /tmp/pip-tmp
 
-# [Optional] Uncomment this section to install additional OS packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
-
-# [Optional] Uncomment this line to install global node packages.
-# RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
+# Setup ssh keys
+COPY .ssh/ /root/.ssh
+RUN chmod 600 /root/.ssh/nodes
+RUN chmod 600 /root/.ssh/nodes.pub
