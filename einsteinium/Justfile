@@ -3,3 +3,6 @@ _list:
 
 ping:
   ansible all -i hosts.yml -m ping
+
+xen_orchestra:
+  ansible-playbook -i hosts.yml xen_orchestra.yml --ask-become-pass
