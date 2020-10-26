@@ -8,16 +8,5 @@ FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
 RUN pip3 install ansible
 RUN ansible-galaxy collection install community.general
 
-# Setup ssh keys
-COPY .ssh/ /root/.ssh
-RUN chmod 600 /root/.ssh/nodes
-RUN chmod 600 /root/.ssh/nodes.pub
-
-# Don't verify host keys
-# I know this is bad, but I don't know how to get around Ansible asking to
-# verify the fingerprints any time the docker container is rebuild
-# When it does that it only lets you say yes to the last one
-ENV ANSIBLE_HOST_KEY_CHECKING=False
-
 # Install Just into the container
 RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
