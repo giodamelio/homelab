@@ -8,5 +8,5 @@ http://test.home.giodamelio.com {
 
 # When an unknown host is sent
 :80 {
-	respond 404
+	respond "Not Found" 404
 }
