@@ -1,0 +1,16 @@
+services:
+  - name: "Infrastructure"
+    icon: "fas fa-server"
+    items:
+      - name: "Cockpit"
+        logo: "assets/logos/cockpit.png"
+        subtitle: "Linux Admin Panel"
+        url: "https://cockpit.home.giodamelio.com"
+      # - name: "Traefik"
+      #   logo: "assets/logos/traefik.png"
+      #   subtitle: "Reverse Proxy Dashboard"
+      #   url: "https://traefik.home.giodamelio.com"
+      # - name: "InfluxDB"
+      #   logo: "assets/logos/influxdb.png"
+      #   subtitle: "Metrics"
+      #   url: "https://influxdb.home.giodamelio.com"

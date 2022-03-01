@@ -23,6 +23,12 @@ gitlab.home.giodamelio.com {
 	reverse_proxy gitlab:80
 }
 
+home.giodamelio.com {
+	import tls
+
+	reverse_proxy homer:8080
+}
+
 cockpit.home.giodamelio.com {
 	import tls
 

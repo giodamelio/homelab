@@ -1,0 +1,40 @@
+---
+# Homepage configuration
+# See https://fontawesome.com/icons for icons options
+
+title: "Gio's Homelab"
+subtitle: "All the hosted things"
+icon: "fas fa-home"
+footer: false
+
+# Empty navbar (allows for dark mode, layout and search buttons)
+links:
+  - name: "Main"
+    icon: "fas fa-home"
+    url: "#"
+  - name: "Infra"
+    icon: "fas fa-server"
+    url: "#infra"
+
+# Services
+# First level array represent a group.
+# Leave only a "items" key if not using group (group name, icon & tagstyle are optional, section separation will not be displayed).
+services:
+  # - name: "Applications"
+  #   icon: "fas fa-cloud"
+  #   items:
+  #     - name: "Minio"
+  #       logo: "assets/logos/minio.png"
+  #       subtitle: "S3 Compatable Object Store"
+  #       url: "https://minio.home.giodamelio.com"
+  - name: "Development"
+    icon: "fas fa-code"
+    items:
+      - name: "Gitlab"
+        logo: "assets/logos/gitlab.png"
+        subtitle: "Self Hosted Code Forge"
+        url: "https://gitlab.home.giodamelio.com"
+      # - name: "Code Server"
+      #   # logo: "assets/logos/minio.png"
+      #   subtitle: "Hosted Code Editor"
+      #   url: "https://code-server.home.giodamelio.com"
