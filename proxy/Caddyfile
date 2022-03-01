@@ -1,0 +1,12 @@
+{
+	auto_https off
+}
+
+http://hello.home.giodamelio.com {
+	respond "Hello World"
+}
+
+# When an unknown host is sent
+:80 {
+	respond 404
+}

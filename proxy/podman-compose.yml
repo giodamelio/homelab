@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  proxy:
+    image: docker.io/caddy:latest
+    ports:
+      - 7777:80
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro,Z
+    networks:
+      - shared
+
+networks:
+  shared:
+    external: true
