@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  minio:
+    image: docker.io/minio/minio:RELEASE.2022-02-05T04-40-59Z
+    command: server --console-address ":9001" /data
+    restart: unless-stopped
+    env_file: .env.minio
+    volumes:
+      - ./data:/data:Z
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://minio:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - shared
+
+networks:
+  shared:
+    external: true

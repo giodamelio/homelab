@@ -1,5 +1,5 @@
 services:
-  - name: "Infrastructure"
+  - name: "Admin"
     icon: "fas fa-server"
     items:
       - name: "Cockpit"
@@ -14,3 +14,10 @@ services:
       #   logo: "assets/logos/influxdb.png"
       #   subtitle: "Metrics"
       #   url: "https://influxdb.home.giodamelio.com"
+  - name: "Data"
+    icon: "fas fa-database"
+    items:
+      - name: "Minio"
+        logo: "assets/logos/minio.png"
+        subtitle: "S3 Compatable Object Store"
+        url: "https://minio.home.giodamelio.com"
