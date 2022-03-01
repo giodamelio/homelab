@@ -26,6 +26,7 @@ gitlab.home.giodamelio.com {
 cockpit.home.giodamelio.com {
 	import tls
 
+	# Have to hardcode the IP address (eww) because cockpit is run on the host, not as a docker container
 	reverse_proxy 10.0.0.192:9090
 }
 
