@@ -12,7 +12,9 @@ delete-network:
 # Forward port 80 to port 8080
 port-forward-create:
   sudo firewall-cmd --add-forward-port=port=80:proto=tcp:toport=8080
+  sudo firewall-cmd --add-forward-port=port=443:proto=tcp:toport=8443
 
 # Remove the forwarded ports
 port-forward-rm:
   sudo firewall-cmd --add-forward-port=port=80:proto=tcp:toport=8080
+  sudo firewall-cmd --add-forward-port=port=443:proto=tcp:toport=8443
