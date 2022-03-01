@@ -1,16 +1,31 @@
 {
-	auto_https off
+	ocsp_stapling off
 }
 
-http://test.home.giodamelio.com {
+(tls) {
+	tls certs@giodamelio.com {
+		dns route53 {
+			max_retries 10
+			aws_profile "default"
+		}
+	}
+}
+
+test.home.giodamelio.com {
+	import tls
+
 	reverse_proxy test:80
 }
 
-http://gitlab.home.giodamelio.com {
+gitlab.home.giodamelio.com {
+	import tls
+
 	reverse_proxy gitlab:80
 }
 
-http://cockpit.home.giodamelio.com {
+cockpit.home.giodamelio.com {
+	import tls
+
 	reverse_proxy 10.0.0.192:9090
 }
 

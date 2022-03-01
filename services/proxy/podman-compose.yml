@@ -7,8 +7,10 @@ services:
     env_file: .env.route53
     ports:
       - 8080:80
+      - 8443:443
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro,Z
+      - ./data/data:/data:Z
     networks:
       - shared
 
