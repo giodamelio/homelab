@@ -35,6 +35,12 @@ home.giodamelio.com {
 	reverse_proxy minio:9001
 }
 
+keycloak.home.giodamelio.com {
+	import tls
+
+	reverse_proxy keycloak:8080
+}
+
 cockpit.home.giodamelio.com {
 	import tls
 
