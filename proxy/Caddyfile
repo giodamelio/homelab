@@ -6,6 +6,10 @@ http://test.home.giodamelio.com {
 	reverse_proxy test:80
 }
 
+http://cockpit.home.giodamelio.com {
+	reverse_proxy 10.0.0.192:9090
+}
+
 # When an unknown host is sent
 :80 {
 	respond "Not Found" 404
