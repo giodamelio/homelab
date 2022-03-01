@@ -9,6 +9,11 @@ services:
     networks:
       - shared
 
+  test:
+    image: docker.io/traefik/whoami:latest
+    networks:
+      - shared
+
 networks:
   shared:
     external: true

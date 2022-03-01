@@ -2,8 +2,8 @@
 	auto_https off
 }
 
-http://hello.home.giodamelio.com {
-	respond "Hello World"
+http://test.home.giodamelio.com {
+	reverse_proxy test:80
 }
 
 # When an unknown host is sent
