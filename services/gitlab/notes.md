@@ -25,3 +25,17 @@ gitlab_rails['gitlab_email_from'] = 'gitlab@giodamelio.com'
 gitlab_rails['gitlab_email_display_name'] = 'Homelab Gitlab'
 gitlab_rails['gitlab_email_reply_to'] = 'noreply@giodamelio.com'
 ```
+
+- Setup Gitlab to backup to minio
+```
+gitlab_rails['backup_keep_time'] = 2592000 # 30 Days in seconds
+
+gitlab_rails['backup_upload_connection'] = {
+  'provider' => 'AWS',
+  'endpoint' => 'http://minio:9000',
+  'aws_access_key_id' => '<access_key>',
+  'aws_secret_access_key' => '<secret_key>',
+  'path_style' => true,
+}
+gitlab_rails['backup_upload_remote_directory'] = '<bucket_name>'
+```

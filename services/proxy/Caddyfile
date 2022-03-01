@@ -29,7 +29,7 @@ home.giodamelio.com {
 	reverse_proxy homer:8080
 }
 
-minio.home.giodamelio.com {
+*.minio.home.giodamelio.com, minio.home.giodamelio.com {
 	import tls
 
 	reverse_proxy minio:9001
