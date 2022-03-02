@@ -9,7 +9,7 @@ services:
       - name: "Keycloak"
         logo: "assets/logos/keycloak.png"
         subtitle: "Identity and Access Management Solution"
-        url: "https://cockpit.home.giodamelio.com"
+        url: "https://keycloak.home.giodamelio.com/admin/master/console"
       # - name: "InfluxDB"
       #   logo: "assets/logos/influxdb.png"
       #   subtitle: "Metrics"

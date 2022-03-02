@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   minio:
-    image: docker.io/minio/minio:RELEASE.2022-02-05T04-40-59Z
+    image: docker.io/minio/minio:RELEASE.2022-02-26T02-54-46Z
     command: server --console-address ":9001" /data
     restart: unless-stopped
     env_file: .env.minio
