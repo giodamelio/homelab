@@ -1,0 +1,46 @@
+---
+# Page meta info, like heading, footer text and nav links
+pageInfo:
+  title: Gio's Homelab
+
+# Optional app settings and configuration
+appConfig:
+  theme: one-dark
+  startingView: minimal
+  # Stop editing via the web config
+  disableConfiguration: true
+  hiderComponents:
+    hideSettings: true
+  # Open apps in the same tab
+  defaultOpeningMethod: sametab
+  # Disable the search
+  webSearch:
+    disableWebSearch: true
+
+# Main content - An array of sections, each containing an array of items
+sections:
+- name: Development
+  icon: fas fa-code
+  items:
+  - title: Gitlab
+    description: Self Hosted Code Forge
+    icon: hl-gitlab
+    url: https://gitlab.home.giodamelio.com
+- name: Data
+  icon: fas fa-database
+  items:
+  - title: Minio
+    description: S3 Compatable Object Store
+    icon: hl-minio
+    url: https://minio.home.giodamelio.com
+- name: Admin
+  icon: fas fa-server
+  items:
+  - title: Cockpit
+    description: Linkx Admin Panel
+    icon: hl-cockpit
+    url: https://cockpit.home.giodamelio.com
+  - title: Keycloak
+    description: Identity and Access Management Solution
+    icon: hl-keycloak
+    url: https://keycloak.home.giodamelio.com

@@ -26,6 +26,12 @@ gitlab.home.giodamelio.com {
 home.giodamelio.com {
 	import tls
 
+	reverse_proxy dashy:80
+}
+
+homer.home.giodamelio.com {
+	import tls
+
 	reverse_proxy homer:8080
 }
 

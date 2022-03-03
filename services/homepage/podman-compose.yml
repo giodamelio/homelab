@@ -10,6 +10,20 @@ services:
     networks:
       - shared
 
+  dashy:
+    image: docker.io/lissy93/dashy:latest
+    restart: unless-stopped
+    volumes:
+      - ./dashy_config/conf.yml:/app/public/conf.yml:Z
+    healthcheck:
+      test: ['CMD', 'node', '/app/services/healthcheck']
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - shared
+
 networks:
   shared:
     external: true
