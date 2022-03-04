@@ -37,10 +37,10 @@ sections:
   icon: fas fa-server
   items:
   - title: Cockpit
-    description: Linkx Admin Panel
+    description: Linux Admin Panel
     icon: hl-cockpit
     url: https://cockpit.home.giodamelio.com
   - title: Keycloak
     description: Identity and Access Management Solution
     icon: hl-keycloak
-    url: https://keycloak.home.giodamelio.com
+    url: https://keycloak.home.giodamelio.com/admin/master/console
