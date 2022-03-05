@@ -1,1 +1,0 @@
-Use this guide to setup Keycloak OpenID auth: https://github.com/minio/minio/blob/master/docs/sts/keycloak.md
