@@ -21,6 +21,11 @@ provider "docker" {
   host = "unix:///var/run/docker.sock"
 }
 
+# Shared network that all the containers will use
+resource "docker_network" "shared" {
+  name = "shared"
+}
+
 # whoami container to use for testing
 resource "docker_container" "test-whoami" {
   image    = docker_image.whoami.latest
@@ -30,6 +35,10 @@ resource "docker_container" "test-whoami" {
   ports {
     external = "8080"
     internal = "80"
+  }
+
+  networks_advanced {
+    name = docker_network.shared.name
   }
 }
 
@@ -57,6 +66,10 @@ resource "docker_container" "portainer" {
   volumes {
     container_path = "/data"
     volume_name    = docker_volume.portainer_data.name
+  }
+
+  networks_advanced {
+    name = docker_network.shared.name
   }
 
   healthcheck {
