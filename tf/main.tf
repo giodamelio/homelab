@@ -58,6 +58,14 @@ resource "docker_container" "portainer" {
     container_path = "/data"
     volume_name    = docker_volume.portainer_data.name
   }
+
+  healthcheck {
+    test         = ["CMD", "wget", "http://localhost:9000/api/status", "-O", "-"]
+    interval     = "10s"
+    timeout      = "5s"
+    retries      = 5
+    start_period = "3s"
+  }
 }
 
 # Volume to store portainers data
