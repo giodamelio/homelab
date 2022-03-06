@@ -7,3 +7,8 @@ resource "docker_image" "portainer" {
   name         = "docker.io/portainer/portainer-ce:2.11.1-alpine"
   keep_locally = false
 }
+
+resource "docker_image" "nginx_proxy_manager" {
+  name         = "docker.io/jc21/nginx-proxy-manager:latest"
+  keep_locally = false
+}

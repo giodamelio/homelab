@@ -32,11 +32,6 @@ resource "docker_container" "test-whoami" {
   name     = "test-whoami"
   hostname = "test-whoami"
 
-  ports {
-    external = "8080"
-    internal = "80"
-  }
-
   networks_advanced {
     name = docker_network.shared.name
   }
@@ -47,16 +42,6 @@ resource "docker_container" "portainer" {
   image    = docker_image.portainer.latest
   name     = "portainer"
   hostname = "portainer"
-
-  ports {
-    internal = 8000
-    external = 8000
-  }
-
-  ports {
-    internal = 9443
-    external = 9443
-  }
 
   volumes {
     container_path = "/var/run/docker.sock"
@@ -84,4 +69,49 @@ resource "docker_container" "portainer" {
 # Volume to store portainers data
 resource "docker_volume" "portainer_data" {
   name = "portainer_data"
+}
+
+# NGINX Proxy Manager to handle the reverse proxy
+resource "docker_container" "nginx_proxy_manager" {
+  image    = docker_image.nginx_proxy_manager.latest
+  name     = "nginx-proxy-manager"
+  hostname = "nginx-proxy-manager"
+
+  ports {
+    internal = 80
+    external = 8000
+  }
+
+  ports {
+    internal = 81
+    external = 8001
+  }
+
+  ports {
+    internal = 443
+    external = 8443
+  }
+
+  volumes {
+    container_path = "/data"
+    volume_name    = docker_volume.nginx_proxy_manager_data.name
+  }
+
+  volumes {
+    container_path = "/etc/letsencrypt"
+    volume_name    = docker_volume.nginx_proxy_manager_letsencrypt.name
+  }
+
+  networks_advanced {
+    name = docker_network.shared.name
+  }
+}
+
+# Volumes to store NGINX Proxy Manager data
+resource "docker_volume" "nginx_proxy_manager_data" {
+  name = "nginx_proxy_manager_data"
+}
+
+resource "docker_volume" "nginx_proxy_manager_letsencrypt" {
+  name = "nginx_proxy_manager_letsencrypt"
 }
