@@ -21,10 +21,6 @@ provider "docker" {
   host = "unix:///var/run/docker.sock"
 }
 
-resource "docker_image" "whoami" {
-  name = "docker.io/traefik/whoami:latest"
-}
-
 resource "docker_container" "test-whoami" {
   image    = docker_image.whoami.latest
   name     = "test-whoami"
