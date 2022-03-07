@@ -12,3 +12,7 @@ resource "docker_container" "test-whoami" {
     name = docker_network.shared.name
   }
 }
+
+output "ip_address" {
+  value = docker_container.test-whoami.network_data[index(docker_container.test-whoami.network_data.*.network_name, "shared")].ip_address
+}
