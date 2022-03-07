@@ -24,4 +24,9 @@ provider "docker" {
 # Shared network that all the containers will use
 resource "docker_network" "shared" {
   name = "shared"
+
+  ipam_config {
+    gateway = "10.155.0.1"
+    subnet  = "10.155.0.0/16"
+  }
 }
