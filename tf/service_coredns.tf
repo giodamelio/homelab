@@ -1,6 +1,46 @@
+resource "docker_image" "docker-gen" {
+  name         = "docker.io/jwilder/docker-gen:0.8.3"
+  keep_locally = false
+}
+
 resource "docker_image" "coredns" {
   name         = "docker.io/coredns/coredns:1.9.0"
   keep_locally = false
+}
+
+# Store the hosts file
+resource "docker_volume" "coredns_hosts_file" {
+  name = "coredns_hosts_file"
+}
+
+# Generate the hosts file for the coredns container
+resource "docker_container" "coredns-gen" {
+  image    = docker_image.docker-gen.latest
+  name     = "coredns-gen"
+  hostname = "coredns-gen"
+
+  command = ["-watch", "/etc/docker-gen/templates/all.hosts.tmpl", "/etc/docker-gen/output/all.hosts"]
+
+  volumes {
+    container_path = "/tmp/docker.sock"
+    host_path      = "/var/run/docker.sock"
+    read_only      = true
+  }
+
+  volumes {
+    container_path = "/etc/docker-gen/templates"
+    host_path      = abspath("../config/coredns/templates")
+    read_only      = true
+  }
+
+  volumes {
+    container_path = "/etc/docker-gen/output"
+    volume_name    = docker_volume.coredns_hosts_file.name
+  }
+
+  networks_advanced {
+    name = docker_network.shared.name
+  }
 }
 
 resource "docker_container" "coredns" {
@@ -22,16 +62,11 @@ resource "docker_container" "coredns" {
   }
 
   volumes {
-    container_path = "/all.hosts"
-    host_path      = abspath("../config/coredns/all.hosts")
-    read_only      = true
+    container_path = "/config"
+    volume_name    = docker_volume.coredns_hosts_file.name
   }
 
   networks_advanced {
     name = docker_network.shared.name
   }
 }
-
-# output "ip_address" {
-#   value = docker_container.test-whoami.network_data[index(docker_container.test-whoami.network_data.*.network_name, "shared")].ip_address
-# }

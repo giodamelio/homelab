@@ -1,0 +1,13 @@
+##########################################
+# Autogenerate by a docker-gen container #
+# Do not manually edit                   #
+##########################################
+
+{{range $container := .}}
+{{range $network := $container.Networks}}
+{{if eq $network.Name "shared"}}
+# {{$container.Name}}
+{{$network.IP}}        {{$container.Hostname}}.direct.home.giodamelio.com
+{{end}}
+{{end}}
+{{end}}
