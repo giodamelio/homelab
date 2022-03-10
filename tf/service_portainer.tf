@@ -16,7 +16,7 @@ resource "docker_container" "portainer" {
 
   volumes {
     container_path = "/data"
-    volume_name    = docker_volume.portainer_data.name
+    host_path      = abspath("../data/portainer/data/")
   }
 
   networks_advanced {
