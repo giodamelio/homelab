@@ -1,3 +1,12 @@
+resource "docker_image" "caddy" {
+  name = "caddy"
+
+  build {
+    path = abspath("../images/proxy")
+    tag  = ["caddy:latest"]
+  }
+}
+
 # Store the hosts file
 resource "docker_volume" "proxy_caddyfile" {
   name = "proxy_caddyfile"
@@ -30,5 +39,32 @@ resource "docker_container" "proxy-gen" {
 
   networks_advanced {
     name = docker_network.shared.name
+  }
+}
+
+resource "docker_container" "proxy" {
+  image    = docker_image.caddy.latest
+  name     = "proxy"
+  hostname = "proxy"
+
+  volumes {
+    container_path = "/etc/caddy/"
+    volume_name    = docker_volume.proxy_caddyfile.name
+  }
+
+  volumes {
+    container_path = "/root/.aws/"
+    host_path      = abspath("../data/proxy/aws_creds")
+    read_only      = true
+  }
+
+  volumes {
+    container_path = "/data"
+    host_path      = abspath("../data/proxy/data/")
+  }
+
+  networks_advanced {
+    name         = docker_network.shared.name
+    ipv4_address = "10.155.0.155"
   }
 }
