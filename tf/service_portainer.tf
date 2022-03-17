@@ -11,12 +11,7 @@ resource "docker_container" "portainer" {
 
   labels {
     label = "ProxyPort"
-    value = "9443"
-  }
-
-  labels {
-    label = "ProxyHttps"
-    value = "true"
+    value = "9000"
   }
 
   volumes {
