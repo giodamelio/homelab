@@ -30,3 +30,9 @@ resource "docker_network" "shared" {
     subnet  = "10.155.0.0/16"
   }
 }
+
+# Images shared between multiple services
+resource "docker_image" "docker-gen" {
+  name         = "docker.io/jwilder/docker-gen:0.8.3"
+  keep_locally = false
+}

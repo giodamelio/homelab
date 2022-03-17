@@ -1,8 +1,3 @@
-resource "docker_image" "docker-gen" {
-  name         = "docker.io/jwilder/docker-gen:0.8.3"
-  keep_locally = false
-}
-
 resource "docker_image" "coredns" {
   name         = "docker.io/coredns/coredns:1.9.0"
   keep_locally = false
