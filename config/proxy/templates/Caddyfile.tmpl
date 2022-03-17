@@ -1,0 +1,29 @@
+{
+	ocsp_stapling off
+}
+
+*.home.giodamelio.com {
+	tls certs@giodamelio.com {
+		dns route53 {
+			max_retries 10
+			aws_profile "default"
+		}
+	}
+
+	{{range $container := .}}
+	{{range $network := $container.Networks}}
+	{{if eq $network.Name "shared"}}
+	# {{$container.Name}}
+	@{{$container.Name}} host {{$container.Name}}.home.giodamelio.com
+	handle @{{$container.Name}} {
+		reverse_proxy {{$network.IP}}
+	}
+	{{end}}
+	{{end}}
+	{{end}}
+
+	# Fallback for otherwise unhandled domains
+	handle {
+		abort
+	}
+}
