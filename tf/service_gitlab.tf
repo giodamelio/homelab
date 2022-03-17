@@ -3,7 +3,12 @@ resource "docker_image" "gitlab-ce" {
   keep_locally = false
 }
 
-# Portainer for easy management of containers
+resource "docker_image" "gitlab-runner" {
+  name         = "docker.io/gitlab/gitlab-runner:v14.8.2"
+  keep_locally = false
+}
+
+# Gitlab
 resource "docker_container" "gitlab" {
   image    = docker_image.gitlab-ce.latest
   name     = "gitlab"
@@ -31,6 +36,27 @@ resource "docker_container" "gitlab" {
   volumes {
     container_path = "/etc/external_config"
     host_path      = abspath("../data/gitlab/external_config/")
+  }
+
+  networks_advanced {
+    name = docker_network.shared.name
+  }
+}
+
+# Gitlab runner
+resource "docker_container" "gitlab-runner" {
+  image    = docker_image.gitlab-runner.latest
+  name     = "gitlab-runner"
+  hostname = "gitlab-runner"
+
+  volumes {
+    container_path = "/var/run/docker.sock"
+    host_path      = "/var/run/docker.sock"
+  }
+
+  volumes {
+    container_path = "/etc/gitlab-runner"
+    host_path      = abspath("../data/gitlab/runner_config/")
   }
 
   networks_advanced {
