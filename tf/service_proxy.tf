@@ -18,7 +18,13 @@ resource "docker_container" "proxy-gen" {
   name     = "proxy-gen"
   hostname = "proxy-gen"
 
-  command = ["-watch", "/etc/docker-gen/templates/Caddyfile.tmpl", "/etc/docker-gen/output/Caddyfile"]
+  command = [
+    "-watch",
+    "-notify-container", docker_container.proxy.name,
+    "-notify-signal", "10", # SIGUSR1
+    "/etc/docker-gen/templates/Caddyfile.tmpl",
+    "/etc/docker-gen/output/Caddyfile"
+  ]
 
   volumes {
     container_path = "/tmp/docker.sock"
