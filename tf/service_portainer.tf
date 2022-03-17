@@ -9,6 +9,16 @@ resource "docker_container" "portainer" {
   name     = "portainer"
   hostname = "portainer"
 
+  labels {
+    label = "ProxyPort"
+    value = "9443"
+  }
+
+  labels {
+    label = "ProxyHttps"
+    value = "true"
+  }
+
   volumes {
     container_path = "/var/run/docker.sock"
     host_path      = "/var/run/docker.sock"
