@@ -26,6 +26,19 @@
 		reverse_proxy {{$network.IP}}
 		{{end}}
 	}
+
+	{{if $container.Labels.ProxyAdditionalHost}}
+	# additional host for {{$container.Name}}
+	@{{$container.Name}}-additional host {{$container.Labels.ProxyAdditionalHost}}
+	handle @{{$container.Name}}-additional {
+		{{if $container.Labels.ProxyAdditionalPort}}
+		reverse_proxy {{$network.IP}}:{{$container.Labels.ProxyAdditionalPort}}
+		{{else}}
+		reverse_proxy {{$network.IP}}
+		{{end}}
+	}
+	{{end}}
+
 	{{end}}
 	{{end}}
 	{{end}}

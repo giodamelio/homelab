@@ -18,6 +18,16 @@ resource "docker_container" "gitlab" {
     "GITLAB_OMNIBUS_CONFIG=from_file \"/etc/external_config/config.rb\""
   ]
 
+  labels {
+    label = "ProxyAdditionalHost"
+    value = "docker.home.giodamelio.com"
+  }
+
+  labels {
+    label = "ProxyAdditionalPort"
+    value = "5050"
+  }
+
   volumes {
     container_path = "/var/opt/gitlab"
     host_path      = abspath("../data/gitlab/data/")
