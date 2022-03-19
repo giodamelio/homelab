@@ -27,7 +27,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -qq curl gzip xz-utils
 
 # Install Factorio
 RUN curl -L https://www.factorio.com/get-download/${FACTORIO_VERSION}/headless/linux64 -o server.tar.xz \
-  && tar xfv server.tar.xz
+  && tar xf server.tar.xz
 
 # Install hivemind to run multiple programs
 RUN curl -Lo hivemind.gz https://github.com/DarthSim/hivemind/releases/download/${HIVEMIND_VERSION}/hivemind-${HIVEMIND_VERSION}-linux-amd64.gz \
