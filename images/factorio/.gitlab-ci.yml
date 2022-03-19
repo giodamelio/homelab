@@ -10,5 +10,5 @@ image_factorio:
       /kaniko/executor
       --context "${CI_PROJECT_DIR}/images/factorio/"
       --dockerfile "${CI_PROJECT_DIR}/images/factorio/Dockerfile"
-      --destination "${CI_REGISTRY_IMAGE}/factorio:${CI_COMMIT_TAG}"
+      --destination "${CI_REGISTRY_IMAGE}/factorio:${CI_COMMIT_SHORT_SHA}"
       --destination "${CI_REGISTRY_IMAGE}/factorio:latest"
