@@ -4,9 +4,11 @@ include:
 stages:
   - build_images
   - plan
+  - deploy
 
 plan:
   stage: plan
+  needs: []
   image: docker.home.giodamelio.com/giodamelio/homelab/builder:latest
   script:
     - chmod 600 $DOCKER_SSH_KEY
@@ -14,7 +16,25 @@ plan:
     - printf "Host 10.0.0.198\n\tIdentityFile %s" $DOCKER_SSH_KEY >> ~/.ssh/config
     - cd tf/
     - terraform init
-    - terraform plan
+    - terraform plan -out=tfplan
+  artifacts:
+    paths:
+      - tf/tfplan
+
+deploy:
+  stage: deploy
+  needs: [plan]
+  image: docker.home.giodamelio.com/giodamelio/homelab/builder:latest
+  when: manual
+  allow_failure: false
+  dependencies: [plan]
+  script:
+    - chmod 600 $DOCKER_SSH_KEY
+    - mkdir -p ~/.ssh
+    - printf "Host 10.0.0.198\n\tIdentityFile %s" $DOCKER_SSH_KEY >> ~/.ssh/config
+    - cd tf/
+    - terraform init
+    - terraform apply -input=false tfplan
 
 #### Job templates ####
 .docker_image:
