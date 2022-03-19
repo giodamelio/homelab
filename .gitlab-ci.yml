@@ -30,4 +30,5 @@ plan:
   only:
     changes:
       - ${CI_PROJECT_DIR}/.gitlab-ci.yml
+      - ${CI_PROJECT_DIR}/images/${IMAGE_NAME}/*
       - ${CI_PROJECT_DIR}/images/${IMAGE_NAME}/**/*
