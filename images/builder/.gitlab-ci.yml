@@ -1,0 +1,4 @@
+image_builder:
+  extends: .docker_image
+  variables:
+    IMAGE_NAME: builder
