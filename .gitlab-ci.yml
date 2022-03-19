@@ -1,6 +1,18 @@
 include:
   - images/factorio/.gitlab-ci.yml
 
+stages:
+  - plan
+  - build
+
+plan:
+  stage: plan
+  image: hashicorp/terraform:1.1.7
+  script:
+    - cd tf/
+    - terraform plan
+
+#### Job templates ####
 .docker_image:
   stage: build
   image:
