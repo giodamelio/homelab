@@ -24,7 +24,7 @@ resource "docker_container" "coredns-gen" {
 
   volumes {
     container_path = "/etc/docker-gen/templates"
-    host_path      = abspath("../config/coredns/templates")
+    host_path      = "${local.basepath}/config/coredns/templates"
     read_only      = true
   }
 
@@ -52,7 +52,7 @@ resource "docker_container" "coredns" {
 
   volumes {
     container_path = "/Corefile"
-    host_path      = abspath("../config/coredns/Corefile")
+    host_path      = "${local.basepath}/config/coredns/Corefile"
     read_only      = true
   }
 

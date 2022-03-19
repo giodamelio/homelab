@@ -18,7 +18,13 @@ terraform {
 }
 
 provider "docker" {
-  host = "unix:///var/run/docker.sock"
+  # host = "unix:///var/run/docker.sock"
+  host     = "ssh://server@10.0.0.198:22"
+  ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null"]
+}
+
+locals {
+  basepath = "/home/server/homelab"
 }
 
 # Shared network that all the containers will use

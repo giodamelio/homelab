@@ -30,22 +30,22 @@ resource "docker_container" "gitlab" {
 
   volumes {
     container_path = "/var/opt/gitlab"
-    host_path      = abspath("../data/gitlab/data/")
+    host_path      = "${local.basepath}/data/gitlab/data"
   }
 
   volumes {
     container_path = "/var/log/gitlab"
-    host_path      = abspath("../data/gitlab/logs/")
+    host_path      = "${local.basepath}/data/gitlab/logs"
   }
 
   volumes {
     container_path = "/etc/gitlab"
-    host_path      = abspath("../data/gitlab/config/")
+    host_path      = "${local.basepath}/data/gitlab/config"
   }
 
   volumes {
     container_path = "/etc/external_config"
-    host_path      = abspath("../data/gitlab/external_config/")
+    host_path      = "${local.basepath}/data/gitlab/external_config"
   }
 
   networks_advanced {
@@ -66,7 +66,7 @@ resource "docker_container" "gitlab-runner" {
 
   volumes {
     container_path = "/etc/gitlab-runner"
-    host_path      = abspath("../data/gitlab/runner_config/")
+    host_path      = "${local.basepath}/data/gitlab/runner_config"
   }
 
   networks_advanced {

@@ -2,7 +2,7 @@ resource "docker_image" "caddy" {
   name = "caddy"
 
   build {
-    path = abspath("../images/proxy")
+    path = "${local.basepath}/images/proxy"
     tag  = ["caddy:latest"]
   }
 }
@@ -34,7 +34,7 @@ resource "docker_container" "proxy-gen" {
 
   volumes {
     container_path = "/etc/docker-gen/templates"
-    host_path      = abspath("../config/proxy/templates")
+    host_path      = "${local.basepath}/config/proxy/templates"
     read_only      = true
   }
 
@@ -60,13 +60,13 @@ resource "docker_container" "proxy" {
 
   volumes {
     container_path = "/root/.aws/"
-    host_path      = abspath("../data/proxy/aws_creds")
+    host_path      = "${local.basepath}/data/proxy/aws_creds"
     read_only      = true
   }
 
   volumes {
     container_path = "/data"
-    host_path      = abspath("../data/proxy/data/")
+    host_path      = "${local.basepath}/data/proxy/data"
   }
 
   networks_advanced {

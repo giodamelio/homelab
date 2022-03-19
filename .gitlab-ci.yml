@@ -2,19 +2,24 @@ include:
   - images/*/.gitlab-ci.yml
 
 stages:
+  - build_images
   - plan
-  - build
 
 plan:
   stage: plan
-  image: hashicorp/terraform:1.1.7
+  image: docker.home.giodamelio.com/giodamelio/homelab/builder:latest
   script:
+    - chmod 600 $DOCKER_SSH_KEY
+    - mkdir -p ~/.ssh
+    - printf "Host 10.0.0.198\n\tIdentityFile %s" $DOCKER_SSH_KEY >> ~/.ssh/config
     - cd tf/
+    - terraform init
     - terraform plan
 
 #### Job templates ####
 .docker_image:
-  stage: build
+  stage: build_images
+  needs: []
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
