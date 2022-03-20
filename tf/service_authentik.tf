@@ -48,21 +48,16 @@ resource "docker_container" "authentik-postgres" {
   }
 }
 
-resource "docker_container" "authentik-server" {
+resource "docker_container" "authentik" {
   image    = docker_image.authentik_server.latest
-  name     = "authentik-server"
-  hostname = "authentik-server"
+  name     = "authentik"
+  hostname = "authentik"
 
   command = ["server"]
 
   labels {
     label = "ProxyPort"
-    value = "9443"
-  }
-
-  labels {
-    label = "ProxyHttps"
-    value = "true"
+    value = "9000"
   }
 
   env = [
