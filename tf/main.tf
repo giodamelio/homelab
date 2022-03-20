@@ -42,3 +42,11 @@ resource "docker_image" "docker-gen" {
   name         = "docker.io/jwilder/docker-gen:0.8.3"
   keep_locally = false
 }
+
+resource "docker_image" "postgres" {
+  name = "docker.io/postgres:14-alpine"
+}
+
+resource "docker_image" "redis" {
+  name = "docker.io/redis:6.2"
+}
