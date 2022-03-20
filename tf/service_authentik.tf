@@ -55,6 +55,16 @@ resource "docker_container" "authentik-server" {
 
   command = ["server"]
 
+  labels {
+    label = "ProxyPort"
+    value = "9443"
+  }
+
+  labels {
+    label = "ProxyHttps"
+    value = "true"
+  }
+
   env = [
     "AUTHENTIK_SECRET_KEY=${var.authentik_secret_key}",
     "AUTHENTIK_REDIS__HOST=${docker_container.authentik-redis.name}",
