@@ -12,3 +12,13 @@ resource "docker_container" "test-whoami" {
     name = docker_network.shared.name
   }
 }
+
+resource "docker_container" "test-whoami-authenticated" {
+  image    = docker_image.whoami.latest
+  name     = "test-whoami-authenticated"
+  hostname = "test-whoami-authenticated"
+
+  networks_advanced {
+    name = docker_network.shared.name
+  }
+}
