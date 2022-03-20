@@ -8,6 +8,11 @@ variable "authentik_postgres_password" {
   sensitive = true
 }
 
+variable "authentik_secret_key" {
+  type      = string
+  sensitive = true
+}
+
 resource "docker_image" "authentik_server" {
   name = "ghcr.io/goauthentik/server:2022.3.2"
 }
@@ -36,6 +41,53 @@ resource "docker_container" "authentik-postgres" {
   volumes {
     container_path = "/var/lib/postgresql/data"
     host_path      = "${local.basepath}/data/authentik/postgres_data"
+  }
+
+  networks_advanced {
+    name = docker_network.shared.name
+  }
+}
+
+resource "docker_container" "authentik-server" {
+  image    = docker_image.authentik_server.latest
+  name     = "authentik-server"
+  hostname = "authentik-server"
+
+  command = ["server"]
+
+  env = [
+    "AUTHENTIK_SECRET_KEY=${var.authentik_secret_key}",
+    "AUTHENTIK_REDIS__HOST=${docker_container.authentik-redis.name}",
+    "AUTHENTIK_POSTGRESQL__HOST=${docker_container.authentik-postgres.name}",
+    "AUTHENTIK_POSTGRESQL__USER=${local.postgres_user}",
+    "AUTHENTIK_POSTGRESQL__PASSWORD=${var.authentik_postgres_password}",
+    "AUTHENTIK_POSTGRESQL__NAME=${local.postgres_db}"
+  ]
+
+  networks_advanced {
+    name = docker_network.shared.name
+  }
+}
+
+resource "docker_container" "authentik-worker" {
+  image    = docker_image.authentik_server.latest
+  name     = "authentik-worker"
+  hostname = "authentik-worker"
+
+  command = ["worker"]
+
+  env = [
+    "AUTHENTIK_SECRET_KEY=${var.authentik_secret_key}",
+    "AUTHENTIK_REDIS__HOST=${docker_container.authentik-redis.name}",
+    "AUTHENTIK_POSTGRESQL__HOST=${docker_container.authentik-postgres.name}",
+    "AUTHENTIK_POSTGRESQL__USER=${local.postgres_user}",
+    "AUTHENTIK_POSTGRESQL__PASSWORD=${var.authentik_postgres_password}",
+    "AUTHENTIK_POSTGRESQL__NAME=${local.postgres_db}"
+  ]
+
+  volumes {
+    container_path = "/certs"
+    host_path      = "${local.basepath}/data/authentik/certs"
   }
 
   networks_advanced {
