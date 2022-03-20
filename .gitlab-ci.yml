@@ -17,9 +17,12 @@ plan:
     - cd tf/
     - terraform init
     - terraform plan -out=tfplan
+    - terraform show -json tfplan > tfplan.json
   artifacts:
     paths:
       - tf/tfplan
+    reports:
+      terraform: tf/tfplan.json
 
 deploy:
   stage: deploy
