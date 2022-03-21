@@ -8,6 +8,11 @@ resource "docker_container" "test-whoami" {
   name     = "test-whoami"
   hostname = "test-whoami"
 
+  labels {
+    label = "traefik.http.routers.test-whoami.rule"
+    value = "Host(`test-whoami.home.giodamelio.com`)"
+  }
+
   networks_advanced {
     name = docker_network.shared.name
   }

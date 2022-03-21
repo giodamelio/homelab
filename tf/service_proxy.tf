@@ -68,9 +68,4 @@ resource "docker_container" "proxy" {
     container_path = "/data"
     host_path      = "${local.basepath}/data/proxy/data"
   }
-
-  networks_advanced {
-    name         = docker_network.shared.name
-    ipv4_address = "10.155.0.155"
-  }
 }
