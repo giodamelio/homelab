@@ -8,6 +8,23 @@ resource "docker_image" "gitlab-runner" {
   keep_locally = false
 }
 
+locals {
+  gitlab_labels = {
+    "traefik.enable"                                        = "true"
+    "traefik.http.routers.gitlab.rule"                      = "Host(`gitlab.home.giodamelio.com`)"
+    "traefik.http.routers.gitlab.service"                   = "gitlab"
+    "traefik.http.services.gitlab.loadbalancer.server.port" = "80"
+    "traefik.http.routers.gitlab.tls"                       = "true"
+    "traefik.http.routers.gitlab.tls.certresolver"          = "le"
+
+    "traefik.http.routers.gitlab-docker.rule"                      = "Host(`docker.home.giodamelio.com`)"
+    "traefik.http.routers.gitlab-docker.service"                   = "gitlab-docker"
+    "traefik.http.services.gitlab-docker.loadbalancer.server.port" = "5050"
+    "traefik.http.routers.gitlab-docker.tls"                       = "true"
+    "traefik.http.routers.gitlab-docker.tls.certresolver"          = "le"
+  }
+}
+
 # Gitlab
 resource "docker_container" "gitlab" {
   image    = docker_image.gitlab-ce.latest
@@ -18,59 +35,13 @@ resource "docker_container" "gitlab" {
     "GITLAB_OMNIBUS_CONFIG=from_file \"/etc/external_config/config.rb\""
   ]
 
-  labels {
-    label = "traefik.enable"
-    value = "true"
-  }
+  dynamic "labels" {
+    for_each = local.gitlab_labels
 
-  labels {
-    label = "traefik.http.routers.gitlab.rule"
-    value = "Host(`gitlab.home.giodamelio.com`)"
-  }
-
-  labels {
-    label = "traefik.http.routers.gitlab.service"
-    value = "gitlab"
-  }
-
-  labels {
-    label = "traefik.http.services.gitlab.loadbalancer.server.port"
-    value = "80"
-  }
-
-  labels {
-    label = "traefik.http.routers.gitlab.tls"
-    value = "true"
-  }
-
-  labels {
-    label = "traefik.http.routers.gitlab.tls.certresolver"
-    value = "le"
-  }
-
-  labels {
-    label = "traefik.http.routers.gitlab-docker.rule"
-    value = "Host(`docker.home.giodamelio.com`)"
-  }
-
-  labels {
-    label = "traefik.http.routers.gitlab-docker.service"
-    value = "gitlab-docker"
-  }
-
-  labels {
-    label = "traefik.http.services.gitlab-docker.loadbalancer.server.port"
-    value = "5050"
-  }
-
-  labels {
-    label = "traefik.http.routers.gitlab-docker.tls"
-    value = "true"
-  }
-
-  labels {
-    label = "traefik.http.routers.gitlab-docker.tls.certresolver"
-    value = "le"
+    content {
+      label = labels.key
+      value = labels.value
+    }
   }
 
   volumes {

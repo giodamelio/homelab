@@ -1,6 +1,14 @@
 locals {
   postgres_user = "authentik"
   postgres_db   = "authentik"
+
+  authentik_labels = {
+    "traefik.enable"                                           = "true"
+    "traefik.http.routers.authentik.rule"                      = "Host(`authentik.home.giodamelio.com`)"
+    "traefik.http.services.authentik.loadbalancer.server.port" = "9000"
+    "traefik.http.routers.authentik.tls"                       = "true"
+    "traefik.http.routers.authentik.tls.certresolver"          = "le"
+  }
 }
 
 variable "authentik_postgres_password" {
@@ -55,29 +63,13 @@ resource "docker_container" "authentik" {
 
   command = ["server"]
 
-  labels {
-    label = "traefik.enable"
-    value = "true"
-  }
+  dynamic "labels" {
+    for_each = local.authentik_labels
 
-  labels {
-    label = "traefik.http.routers.authentik.rule"
-    value = "Host(`authentik.home.giodamelio.com`)"
-  }
-
-  labels {
-    label = "traefik.http.services.authentik.loadbalancer.server.port"
-    value = "9000"
-  }
-
-  labels {
-    label = "traefik.http.routers.authentik.tls"
-    value = "true"
-  }
-
-  labels {
-    label = "traefik.http.routers.authentik.tls.certresolver"
-    value = "le"
+    content {
+      label = labels.key
+      value = labels.value
+    }
   }
 
   env = [

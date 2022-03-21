@@ -3,29 +3,34 @@ resource "docker_image" "whoami" {
   keep_locally = false
 }
 
+locals {
+  test-whoami_labels = {
+    "traefik.enable"                                    = "true"
+    "traefik.http.routers.test-whoami.rule"             = "Host(`test-whoami.home.giodamelio.com`)"
+    "traefik.http.routers.test-whoami.tls"              = "true"
+    "traefik.http.routers.test-whoami.tls.certresolver" = "le"
+  }
+
+  test-whoami-authenticated_labels = {
+    "traefik.enable"                                                  = "true"
+    "traefik.http.routers.test-whoami-authenticated.rule"             = "Host(`test-whoami-authenticated.home.giodamelio.com`)"
+    "traefik.http.routers.test-whoami-authenticated.tls"              = "true"
+    "traefik.http.routers.test-whoami-authenticated.tls.certresolver" = "le"
+  }
+}
+
 resource "docker_container" "test-whoami" {
   image    = docker_image.whoami.latest
   name     = "test-whoami"
   hostname = "test-whoami"
 
-  labels {
-    label = "traefik.enable"
-    value = "true"
-  }
+  dynamic "labels" {
+    for_each = local.test-whoami_labels
 
-  labels {
-    label = "traefik.http.routers.test-whoami.rule"
-    value = "Host(`test-whoami.home.giodamelio.com`)"
-  }
-
-  labels {
-    label = "traefik.http.routers.test-whoami.tls"
-    value = "true"
-  }
-
-  labels {
-    label = "traefik.http.routers.test-whoami.tls.certresolver"
-    value = "le"
+    content {
+      label = labels.key
+      value = labels.value
+    }
   }
 
   networks_advanced {
@@ -38,24 +43,13 @@ resource "docker_container" "test-whoami-authenticated" {
   name     = "test-whoami-authenticated"
   hostname = "test-whoami-authenticated"
 
-  labels {
-    label = "traefik.enable"
-    value = "true"
-  }
+  dynamic "labels" {
+    for_each = local.test-whoami-authenticated_labels
 
-  labels {
-    label = "traefik.http.routers.test-whoami-authenticated.rule"
-    value = "Host(`test-whoami-authenticated.home.giodamelio.com`)"
-  }
-
-  labels {
-    label = "traefik.http.routers.test-whoami-authenticated.tls"
-    value = "true"
-  }
-
-  labels {
-    label = "traefik.http.routers.test-whoami-authenticated.tls.certresolver"
-    value = "le"
+    content {
+      label = labels.key
+      value = labels.value
+    }
   }
 
   networks_advanced {

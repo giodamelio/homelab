@@ -3,34 +3,28 @@ resource "docker_image" "traefik" {
   keep_locally = false
 }
 
+locals {
+  traefik_labels = {
+    "traefik.enable"                                         = "true"
+    "traefik.http.routers.traefik.rule"                      = "Host(`traefik.home.giodamelio.com`)"
+    "traefik.http.services.traefik.loadbalancer.server.port" = "8080"
+    "traefik.http.routers.traefik.tls"                       = "true"
+    "traefik.http.routers.traefik.tls.certresolver"          = "le"
+  }
+}
+
 resource "docker_container" "traefik" {
   image    = docker_image.traefik.latest
   name     = "traefik"
   hostname = "traefik"
 
-  labels {
-    label = "traefik.enable"
-    value = "true"
-  }
+  dynamic "labels" {
+    for_each = local.traefik_labels
 
-  labels {
-    label = "traefik.http.routers.traefik.rule"
-    value = "Host(`traefik.home.giodamelio.com`)"
-  }
-
-  labels {
-    label = "traefik.http.services.traefik.loadbalancer.server.port"
-    value = "8080"
-  }
-
-  labels {
-    label = "traefik.http.routers.traefik.tls"
-    value = "true"
-  }
-
-  labels {
-    label = "traefik.http.routers.traefik.tls.certresolver"
-    value = "le"
+    content {
+      label = labels.key
+      value = labels.value
+    }
   }
 
   volumes {

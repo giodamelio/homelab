@@ -3,35 +3,29 @@ resource "docker_image" "portainer" {
   keep_locally = false
 }
 
+locals {
+  portainer_labels = {
+    "traefik.enable"                                           = "true"
+    "traefik.http.routers.portainer.rule"                      = "Host(`portainer.home.giodamelio.com`)"
+    "traefik.http.services.portainer.loadbalancer.server.port" = "9000"
+    "traefik.http.routers.portainer.tls"                       = "true"
+    "traefik.http.routers.portainer.tls.certresolver"          = "le"
+  }
+}
+
 # Portainer for easy management of containers
 resource "docker_container" "portainer" {
   image    = docker_image.portainer.latest
   name     = "portainer"
   hostname = "portainer"
 
-  labels {
-    label = "traefik.enable"
-    value = "true"
-  }
+  dynamic "labels" {
+    for_each = local.portainer_labels
 
-  labels {
-    label = "traefik.http.routers.portainer.rule"
-    value = "Host(`portainer.home.giodamelio.com`)"
-  }
-
-  labels {
-    label = "traefik.http.services.portainer.loadbalancer.server.port"
-    value = "9000"
-  }
-
-  labels {
-    label = "traefik.http.routers.portainer.tls"
-    value = "true"
-  }
-
-  labels {
-    label = "traefik.http.routers.portainer.tls.certresolver"
-    value = "le"
+    content {
+      label = labels.key
+      value = labels.value
+    }
   }
 
   volumes {
