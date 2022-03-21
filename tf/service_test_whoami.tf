@@ -38,6 +38,26 @@ resource "docker_container" "test-whoami-authenticated" {
   name     = "test-whoami-authenticated"
   hostname = "test-whoami-authenticated"
 
+  labels {
+    label = "traefik.enable"
+    value = "true"
+  }
+
+  labels {
+    label = "traefik.http.routers.test-whoami-authenticated.rule"
+    value = "Host(`test-whoami-authenticated.home.giodamelio.com`)"
+  }
+
+  labels {
+    label = "traefik.http.routers.test-whoami-authenticated.tls"
+    value = "true"
+  }
+
+  labels {
+    label = "traefik.http.routers.test-whoami-authenticated.tls.certresolver"
+    value = "le"
+  }
+
   networks_advanced {
     name = docker_network.shared.name
   }

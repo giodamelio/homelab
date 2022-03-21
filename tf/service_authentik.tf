@@ -60,6 +60,31 @@ resource "docker_container" "authentik" {
     value = "9000"
   }
 
+  labels {
+    label = "traefik.enable"
+    value = "true"
+  }
+
+  labels {
+    label = "traefik.http.routers.authentik.rule"
+    value = "Host(`authentik.home.giodamelio.com`)"
+  }
+
+  labels {
+    label = "traefik.http.services.authentik.loadbalancer.server.port"
+    value = "9000"
+  }
+
+  labels {
+    label = "traefik.http.routers.authentik.tls"
+    value = "true"
+  }
+
+  labels {
+    label = "traefik.http.routers.authentik.tls.certresolver"
+    value = "le"
+  }
+
   env = [
     "AUTHENTIK_SECRET_KEY=${var.authentik_secret_key}",
     "AUTHENTIK_REDIS__HOST=${docker_container.authentik-redis.name}",

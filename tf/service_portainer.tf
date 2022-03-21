@@ -24,6 +24,31 @@ resource "docker_container" "portainer" {
     }
   }
 
+  labels {
+    label = "traefik.enable"
+    value = "true"
+  }
+
+  labels {
+    label = "traefik.http.routers.portainer.rule"
+    value = "Host(`portainer.home.giodamelio.com`)"
+  }
+
+  labels {
+    label = "traefik.http.services.portainer.loadbalancer.server.port"
+    value = "9000"
+  }
+
+  labels {
+    label = "traefik.http.routers.portainer.tls"
+    value = "true"
+  }
+
+  labels {
+    label = "traefik.http.routers.portainer.tls.certresolver"
+    value = "le"
+  }
+
   volumes {
     container_path = "/var/run/docker.sock"
     host_path      = "/var/run/docker.sock"

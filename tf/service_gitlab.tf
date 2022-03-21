@@ -28,6 +28,31 @@ resource "docker_container" "gitlab" {
     value = "5050"
   }
 
+  labels {
+    label = "traefik.enable"
+    value = "true"
+  }
+
+  labels {
+    label = "traefik.http.routers.gitlab.rule"
+    value = "Host(`gitlab.home.giodamelio.com`)"
+  }
+
+  labels {
+    label = "traefik.http.services.gitlab.loadbalancer.server.port"
+    value = "80"
+  }
+
+  labels {
+    label = "traefik.http.routers.gitlab.tls"
+    value = "true"
+  }
+
+  labels {
+    label = "traefik.http.routers.gitlab.tls.certresolver"
+    value = "le"
+  }
+
   volumes {
     container_path = "/var/opt/gitlab"
     host_path      = "${local.basepath}/data/gitlab/data"
