@@ -3,26 +3,11 @@ resource "docker_image" "portainer" {
   keep_locally = false
 }
 
-locals {
-  labels = {
-    ProxyPort = "9000"
-  }
-}
-
 # Portainer for easy management of containers
 resource "docker_container" "portainer" {
   image    = docker_image.portainer.latest
   name     = "portainer"
   hostname = "portainer"
-
-  dynamic "labels" {
-    for_each = local.labels
-
-    content {
-      label = labels.key
-      value = labels.value
-    }
-  }
 
   labels {
     label = "traefik.enable"

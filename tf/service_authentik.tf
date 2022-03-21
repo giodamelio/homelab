@@ -56,11 +56,6 @@ resource "docker_container" "authentik" {
   command = ["server"]
 
   labels {
-    label = "ProxyPort"
-    value = "9000"
-  }
-
-  labels {
     label = "traefik.enable"
     value = "true"
   }

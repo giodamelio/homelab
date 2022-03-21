@@ -19,16 +19,6 @@ resource "docker_container" "gitlab" {
   ]
 
   labels {
-    label = "ProxyAdditionalHost"
-    value = "docker.home.giodamelio.com"
-  }
-
-  labels {
-    label = "ProxyAdditionalPort"
-    value = "5050"
-  }
-
-  labels {
     label = "traefik.enable"
     value = "true"
   }
