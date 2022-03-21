@@ -39,6 +39,11 @@ resource "docker_container" "gitlab" {
   }
 
   labels {
+    label = "traefik.http.routers.gitlab.service"
+    value = "gitlab"
+  }
+
+  labels {
     label = "traefik.http.services.gitlab.loadbalancer.server.port"
     value = "80"
   }
@@ -50,6 +55,31 @@ resource "docker_container" "gitlab" {
 
   labels {
     label = "traefik.http.routers.gitlab.tls.certresolver"
+    value = "le"
+  }
+
+  labels {
+    label = "traefik.http.routers.gitlab-docker.rule"
+    value = "Host(`docker.home.giodamelio.com`)"
+  }
+
+  labels {
+    label = "traefik.http.routers.gitlab-docker.service"
+    value = "gitlab-docker"
+  }
+
+  labels {
+    label = "traefik.http.services.gitlab-docker.loadbalancer.server.port"
+    value = "5050"
+  }
+
+  labels {
+    label = "traefik.http.routers.gitlab-docker.tls"
+    value = "true"
+  }
+
+  labels {
+    label = "traefik.http.routers.gitlab-docker.tls.certresolver"
     value = "le"
   }
 
