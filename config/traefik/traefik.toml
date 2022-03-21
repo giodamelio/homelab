@@ -1,0 +1,25 @@
+[api]
+insecure = true
+
+[providers.docker]
+network = "shared"
+exposedByDefault = false
+
+[entryPoints]
+
+[entryPoints.http]
+address = ":80"
+
+[entryPoints.http.http.redirections.entryPoint]
+to = "https"
+scheme = "https"
+
+[entryPoints.https]
+address = ":443"
+
+[certificatesResolvers.le.acme]
+email = "letsencrypt@giodamelio.com"
+storage = "/acme/acme.json"
+# caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+[certificatesResolvers.le.acme.dnsChallenge]
+provider = "route53"

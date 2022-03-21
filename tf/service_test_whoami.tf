@@ -9,8 +9,23 @@ resource "docker_container" "test-whoami" {
   hostname = "test-whoami"
 
   labels {
+    label = "traefik.enable"
+    value = "true"
+  }
+
+  labels {
     label = "traefik.http.routers.test-whoami.rule"
     value = "Host(`test-whoami.home.giodamelio.com`)"
+  }
+
+  labels {
+    label = "traefik.http.routers.test-whoami.tls"
+    value = "true"
+  }
+
+  labels {
+    label = "traefik.http.routers.test-whoami.tls.certresolver"
+    value = "le"
   }
 
   networks_advanced {
