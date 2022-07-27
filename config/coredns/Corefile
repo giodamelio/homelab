@@ -1,7 +1,0 @@
-home.giodamelio.com:53 {
-  # Start a healthcheck endpoint on port 8080
-  health :8080
-
-  # Serve some zones from a hosts file
-  hosts /config/all.hosts
-}

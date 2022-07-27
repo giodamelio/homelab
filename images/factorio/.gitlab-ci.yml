@@ -1,4 +1,0 @@
-image_factorio:
-  extends: .docker_image
-  variables:
-    IMAGE_NAME: factorio

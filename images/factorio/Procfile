@@ -1,2 +1,0 @@
-tailscale: tailscaled -tun=userspace-networking
-factorio: ./factorio.sh
