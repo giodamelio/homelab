@@ -1,0 +1,29 @@
+- name: "Setup Personal Machine"
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Backup old SSH keys
+      block:
+        - name: Create backup directory
+          file:
+            path: ../tmp/old_ssh_keys/{{ ansible_date_time.iso8601 }}
+            state: directory
+          register: path
+        - name: Check if public key exists exists
+          stat: path=$HOME/.ssh/homelab.pub
+          register: file
+        - name: Move public key
+          command: mv $HOME/.ssh/homelab.pub {{ path.path }}/
+          when: file.stat.exists
+        - name: Check if private key exists exists
+          stat: path=$HOME/.ssh/homelab
+          register: file
+        - name: Move private key
+          command: mv $HOME/.ssh/homelab {{ path.path }}/
+          when: file.stat.exists
+
+    - name: Generate new SSH key
+      community.crypto.openssh_keypair:
+        path: ~/.ssh/homelab
+        type: ed25519
+        regenerate: never

@@ -1,0 +1,33 @@
+- name: Basic Setup
+  hosts: nomad_cluster
+  tasks:
+    - name: Setup /etc/issue
+      become: yes
+      ansible.builtin.template:
+        src: templates/issue.j2
+        dest: /etc/issue
+
+    - name: Install some commonly used programs
+      become: yes
+      ansible.builtin.apt:
+        pkg:
+          - sudo
+          - tree
+          - ripgrep
+          - curl
+          - gnupg
+
+    - name: Harden SSH
+      become: yes
+      ansible.builtin.template:
+        src: templates/ssh_config.conf.j2
+        dest: /etc/ssh/sshd_config.d/custom.conf
+      notify:
+        - restart sshd
+
+  handlers:
+    - name: restart sshd
+      become: yes
+      service:
+        name: sshd
+        state: restarted

@@ -1,0 +1,25 @@
+- name: Setup Nomad
+  hosts: nomad_cluster
+  tasks:
+    - name: Add Hashicorp APT Key
+      become: yes
+      ansible.builtin.apt_key:
+        url: https://apt.releases.hashicorp.com/gpg
+        state: present
+
+    - name: Add Hashicorp APT Repo
+      become: yes
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_facts['lsb']['codename'] }} main"
+        state: present
+
+    - name: Install Consul and Nomad
+      become: yes
+      ansible.builtin.apt:
+        update_cache: yes
+        pkg:
+          - consul
+          - nomad
+
+    - name: Add Consul configuation
+      
